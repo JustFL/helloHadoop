@@ -39,7 +39,7 @@ class PartitionSortReducer extends Reducer<Flowbean, Text, Text, Flowbean>{
     }
 }
 
-class DefinePartition extends Partitioner<Flowbean, Text>{
+class CustomPartition extends Partitioner<Flowbean, Text>{
 
     @Override
     public int getPartition(Flowbean flowbean, Text text, int numPartitions) {
@@ -65,14 +65,14 @@ class DefinePartition extends Partitioner<Flowbean, Text>{
     }
 }
 
-public class SelfDefinePartitionSort {
+public class CustomPartitionSort {
 
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
 
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf);
 
-        job.setJarByClass(SelfDefinePartitionSort.class);
+        job.setJarByClass(CustomPartitionSort.class);
 
         job.setMapperClass(PartitionSortMapper.class);
         job.setReducerClass(PartitionSortReducer.class);
@@ -83,7 +83,7 @@ public class SelfDefinePartitionSort {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Flowbean.class);
 
-        job.setPartitionerClass(DefinePartition.class);
+        job.setPartitionerClass(CustomPartition.class);
 
         /**
          * 1.ReduceTasks大于getPartition的结果数 会产生空的结果文件

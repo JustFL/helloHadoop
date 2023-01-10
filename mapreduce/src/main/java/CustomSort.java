@@ -18,7 +18,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-class DefineSortMapper extends Mapper<LongWritable, Text, Flowbean, Text>{
+class CustomSortMapper extends Mapper<LongWritable, Text, Flowbean, Text>{
 
     private Flowbean outK = new Flowbean();
     private Text outV = new Text();
@@ -35,7 +35,7 @@ class DefineSortMapper extends Mapper<LongWritable, Text, Flowbean, Text>{
     }
 }
 
-class DefineSortReducer extends Reducer<Flowbean, Text, Text, Flowbean>{
+class CustomSortReducer extends Reducer<Flowbean, Text, Text, Flowbean>{
     protected void reduce(Flowbean key, java.lang.Iterable<Text> values, Context context) throws java.io.IOException ,InterruptedException {
 
         /**
@@ -55,16 +55,16 @@ class DefineSortReducer extends Reducer<Flowbean, Text, Text, Flowbean>{
     }
 }
 
-public class SelfDefineSort {
+public class CustomSort {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf);
 
-        job.setJarByClass(SelfDefineSort.class);
+        job.setJarByClass(CustomSort.class);
 
-        job.setMapperClass(DefineSortMapper.class);
-        job.setReducerClass(DefineSortReducer.class);
+        job.setMapperClass(CustomSortMapper.class);
+        job.setReducerClass(CustomSortReducer.class);
 
         job.setMapOutputKeyClass(Flowbean.class);
         job.setMapOutputValueClass(Text.class);

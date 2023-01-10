@@ -9,7 +9,6 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -92,7 +91,7 @@ class Flowbean implements WritableComparable<Flowbean>{
     }
 }
 
-class DefineMapper extends Mapper<LongWritable, Text, Text, Flowbean>{
+class CustomMapper extends Mapper<LongWritable, Text, Text, Flowbean>{
 
     private Text outK = new Text();
     private Flowbean outV = new Flowbean();
@@ -112,7 +111,7 @@ class DefineMapper extends Mapper<LongWritable, Text, Text, Flowbean>{
     }
 }
 
-class DefineReducer extends Reducer<Text, Flowbean, Text, Flowbean>{
+class CustomReducer extends Reducer<Text, Flowbean, Text, Flowbean>{
 
     private Flowbean outV = new Flowbean();
     protected void reduce(Text key, java.lang.Iterable<Flowbean> values, Context context)
@@ -131,16 +130,16 @@ class DefineReducer extends Reducer<Text, Flowbean, Text, Flowbean>{
     }
 }
 
-public class SelfDefineClass {
+public class CustomClass {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf);
 
-        job.setJarByClass(SelfDefineClass.class);
+        job.setJarByClass(CustomClass.class);
 
-        job.setMapperClass(DefineMapper.class);
-        job.setReducerClass(DefineReducer.class);
+        job.setMapperClass(CustomMapper.class);
+        job.setReducerClass(CustomReducer.class);
 
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(Flowbean.class);
