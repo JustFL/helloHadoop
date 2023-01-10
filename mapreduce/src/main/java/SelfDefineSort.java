@@ -74,7 +74,7 @@ public class SelfDefineSort {
 
         //将自定义类实验的输出结果作为输入
         FileInputFormat.addInputPath(job, new Path("D:\\Code-Workspace\\helloHadoop\\mapreduce\\flowoutput"));
-        FileOutputFormat.setOutputPath(job, new Path("D:\\selfoutput11"));
+        FileOutputFormat.setOutputPath(job, new Path("D:\\Code-Workspace\\helloHadoop\\mapreduce\\flowsortoutput"));
 
         job.waitForCompletion(true);
     }
