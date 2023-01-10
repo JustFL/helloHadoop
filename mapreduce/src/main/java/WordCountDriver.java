@@ -62,11 +62,6 @@ public class WordCountDriver {
         //FileInputFormat.setMaxInputSplitSize(job, 330);
         //FileInputFormat.setMinInputSplitSize(job, 20*1024*1024);
 
-        //如果有大量小文件 推荐使用CombineFileInputFormat 可以将小文件进行合并读取到一个切片中
-        //如下代码中如果多个文件大小相加仍然小于切片大小10M 将会只产生一个切片
-        //job.setInputFormatClass(CombineFileInputFormat.class);
-        //CombineFileInputFormat.setMaxInputSplitSize(job, 10*1024*1024);
-
         /**
          * 设置reducer的并行度 就是启动多少个reducetask任务 是由job.setNumReduceTasks()方法决定的
          * reducer的并行度在显示上就是最终输出结果的文件个数 将所有的结果文件合并起来就是最终结果
