@@ -1,6 +1,3 @@
-import java.io.IOException;
-import java.net.URL;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -8,6 +5,8 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+import java.io.IOException;
 
 /**
  * 驱动类：代码提交类
@@ -61,6 +60,7 @@ public class WordCountDriver {
         //单位Byte
         //FileInputFormat.setMaxInputSplitSize(job, 330);
         //FileInputFormat.setMinInputSplitSize(job, 20*1024*1024);
+
 
         /**
          * 设置reducer的并行度 就是启动多少个reducetask任务 是由job.setNumReduceTasks()方法决定的

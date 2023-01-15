@@ -60,7 +60,6 @@ class CustomPartition extends Partitioner<Flowbean, Text>{
         }else{
             partition = 4;
         }
-
         return partition;
     }
 }

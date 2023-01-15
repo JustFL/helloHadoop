@@ -21,9 +21,16 @@ import java.util.List;
  * 首先两张表的关联字段是pid 所以要将pid作为key进行发送
  * 两张表的其他字段作为value 为了在reduce端对数据进行区分 所以要在map端对数据进行打标签
  * product:
- * P0001	iPhoneX	c01	2000
+ * 01	小米
+ * 02	华为
+ * 03	格力
  * order:
- * 1001	20150710	P0001	2
+ * 1001	01	1
+ * 1002	02	2
+ * 1003	03	3
+ * 1004	01	4
+ * 1005	02	5
+ * 1006	03	6
  *
  * 这种方法的弊端
  * 1 并行度不高
@@ -50,12 +57,12 @@ public class ReduceJoin {
         protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, Text>.Context context)
                 throws IOException, InterruptedException {
             String[] datas = value.toString().split("\t");
-            if (fileName.equals("product.txt")) {
+            if (fileName.contains("product")) {
                 k.set(datas[0]);
-                v.set("PR"+datas[1]+"\t"+datas[2]+"\t"+datas[3]);
+                v.set("PR"+datas[1]);
             }else {
-                k.set(datas[2]);
-                v.set("OR"+datas[0]+"\t"+datas[1]+"\t"+datas[3]);
+                k.set(datas[1]);
+                v.set("OR"+datas[0]+"\t"+datas[2]);
             }
             context.write(k, v);
         }
@@ -113,11 +120,10 @@ public class ReduceJoin {
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        System.setProperty("HADOOP_USER_NAME", "hadoop");
+        System.setProperty("HADOOP_USER_NAME", "root");
 
         Configuration conf = new Configuration();
-        conf.addResource("config/core-site.xml");
-        conf.addResource("config/hdfs-site.xml");
+        conf.set("fs.defaultFS", "hdfs://bigdata01:8020");
 
         Job job = Job.getInstance(conf);
 
@@ -132,7 +138,7 @@ public class ReduceJoin {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(NullWritable.class);
 
-        FileInputFormat.addInputPath(job, new Path("/reducejoin"));
+        FileInputFormat.addInputPath(job, new Path("/mapjoin"));
         FileOutputFormat.setOutputPath(job, new Path("/reducejoin_1"));
 
         job.waitForCompletion(true);
