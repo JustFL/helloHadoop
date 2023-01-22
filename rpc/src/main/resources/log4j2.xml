@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration>
+    <properties>
+        <property name="LOG_HOME">logs</property>
+        <property name="MIDV">log4j2:[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%c-%t]:%L --- %m%n</property>
+        <property name="MIDE">log4j2:[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] %l{36} - %m%n</property>
+    </properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${MIDV}" />
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="ERROR">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+</configuration>
